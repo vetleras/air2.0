@@ -67,7 +67,7 @@ def populate_citites_with_country_codes(cities: list[str]) -> list[tuple[str, st
 
 @click.command()
 @click.argument("cities", nargs=-1)
-def fetch(cities: tuple[str]):
+def main(cities: tuple[str]):
     """Fetch air quality data from discomap and store them in air_quality_data/city/<sampling_point>.csv"""
     for city, country_code in populate_citites_with_country_codes(cities):
         pathlib.Path(f"air_quality_data/{city}").mkdir(parents=True, exist_ok=True)
@@ -77,4 +77,4 @@ def fetch(cities: tuple[str]):
 
 
 if __name__ == "__main__":
-    fetch()
+    main()
