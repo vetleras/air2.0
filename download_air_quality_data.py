@@ -31,7 +31,7 @@ def get_urls(city: str, country_code: str, pollutant_nr: int = 6001) -> list[str
 def get_dfs_for_city(city: str, country_code: str) -> dict[str, pd.DataFrame]:
     dfs = {}
     with click.progressbar(
-        get_urls(city, country_code), label=f"fetching data for {city}"
+        get_urls(city, country_code), label=f"downloading data for {city}"
     ) as progress_bar:
         for url in progress_bar:
             # extract filename from url (ex. https://ereporting.blob.core.windows.net/downloadservice/NO_6001_28792_2013_timeseries.csv)
