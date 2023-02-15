@@ -20,7 +20,7 @@ def main(cities: tuple[str]):
             point,
             area_relation="Contains",
             platformname="Sentinel-2",
-            cloudcoverpercentage=(0, 30),
+            cloudcoverpercentage=(0, 50),
         )
         df = API.to_dataframe(products)
         df.to_csv(f"sentinel_product_data/{city}.csv")
