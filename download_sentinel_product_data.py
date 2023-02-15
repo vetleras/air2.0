@@ -11,7 +11,7 @@ API = SentinelAPI("vetlerastirsed-javru6-nixdAk", "tirsed-javru6-nixdAk")
 @click.command()
 @click.argument("cities", nargs=-1)
 def main(cities: tuple[str]):
-    """Download product data from Sentinel API to sentinel_product_data"""
+    """Download product data from Sentinel API and store them in sentinel_product_data/<city>.csv"""
     pathlib.Path(f"sentinel_product_data").mkdir(exist_ok=True)
     for city in cities:
         location = GEOLOCATOR.geocode(city)
