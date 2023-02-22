@@ -15,9 +15,8 @@ def main(cities: tuple[str]):
     pathlib.Path(f"sentinel_product_data").mkdir(exist_ok=True)
     for city in cities:
         location = GEOLOCATOR.geocode(city)
-        point = Point((location.latitude, location.longitude))
         products = API.query(
-            point,
+            area=f"{location.latitude}, {location.longitude}",
             area_relation="Contains",
             platformname="Sentinel-2",
             cloudcoverpercentage=(0, 50),
