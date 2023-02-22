@@ -1,5 +1,6 @@
 import numpy as np
 from pyproj import Proj
+from shapely import geometry
 
 def distance_calculation(latitude, longitude):
   p = Proj('EPSG:3035', preserve_units=False)
@@ -12,6 +13,15 @@ def distance_calculation(latitude, longitude):
   max_latitude = np.max([np.abs(point1_c[0] - latitude), np.abs(point2_c[0] - latitude)])
   max_longitude = np.max([np.abs(point1_c[1] - longitude), np.abs(point2_c[1] - longitude)])
 
-  return (max_latitude + max_longitude) / 2
+  offset = (max_latitude + max_longitude) / 2
+  p1 = geometry.Point(latitude-offset, longitude-offset)
+  p2 = geometry.Point(latitude-offset, longitude+offset)
+  p3 = geometry.Point(latitude+offset, longitude+offset)
+  p4 = geometry.Point(latitude+offset, longitude-offset)
+  pointList = [p1, p2, p3, p4]
+  poly = geometry.Polygon([[p.x, p.y] for p in pointList])
 
-    
+  return poly.wkt
+
+if __name__ == "__main__":
+  distance_calculation()
