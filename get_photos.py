@@ -64,7 +64,9 @@ def main(city):
         "TIME": "2023-01-20/2023-01-20",
     }
 
-    image = requests.get(url, parameters).content
+    response = requests.get(url, parameters)
+    #print(response.request.url)
+    image = response.content
 
     f = open("img.jpg", "wb")
     f.write(image)
