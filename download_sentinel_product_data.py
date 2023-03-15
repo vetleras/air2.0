@@ -2,7 +2,6 @@ import pathlib
 import click
 from geopy.geocoders import Nominatim
 from sentinelsat import SentinelAPI
-from shapely import Point
 
 GEOLOCATOR = Nominatim(user_agent="NTNU TTK4852 group 1")
 API = SentinelAPI("vetlerastirsed-javru6-nixdAk", "tirsed-javru6-nixdAk")
@@ -10,9 +9,9 @@ API = SentinelAPI("vetlerastirsed-javru6-nixdAk", "tirsed-javru6-nixdAk")
 
 @click.command()
 @click.argument("cities", nargs=-1)
-def main(cities: tuple[str]):
+def main(cities: list[str]):
     """Download product data from Sentinel API and store them in sentinel_product_data/<city>.csv"""
-    pathlib.Path(f"sentinel_product_data").mkdir(exist_ok=True)
+    pathlib.Path("sentinel_product_data").mkdir(exist_ok=True)
     for city in cities:
         location = GEOLOCATOR.geocode(city)
         products = API.query(
