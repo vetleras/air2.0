@@ -1,14 +1,14 @@
 import click
 import pandas as pd
 import os
-import functools as ft
 import datetime
+pd.options.mode.chained_assignment = None
 
 
-@click.command()
-@click.argument("city")
-def main(city: str):
+
+def main(city: str) -> pd.DataFrame:
     """Output the worst dates for a given city which has data in air_quality_data and sentinel_product_data"""
+    print(city)
     city_dir_path = os.path.join("air_quality_data", city)
 
     main_df = pd.DataFrame(columns=["measured_at"])
@@ -25,6 +25,9 @@ def main(city: str):
     main_df["measured_at"] = pd.to_datetime(main_df["measured_at"])
     df = main_df[["measured_at"]]
 
+    if df.empty:
+        return pd.DataFrame()
+
     df["max"] = main_df.max(axis=1, numeric_only=True)
     df = df.loc[df["max"] >= 50]
     df.sort_values(by="max", ascending=False, inplace=True)
@@ -38,9 +41,9 @@ def main(city: str):
         df.at[index, "image_taken"] = image_taken
         df.at[index, "time_diff"] = abs(measured_at - image_taken)
 
-    df = df.loc[df["time_diff"] < datetime.timedelta(days=1)]
-    print(df)
+    df = df.loc[df["time_diff"] < datetime.timedelta(hours=6)]
+    return df
 
 
 if __name__ == "__main__":
-    main()
+    print(main())
