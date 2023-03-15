@@ -25,9 +25,6 @@ config.sh_client_secret = 'dyHmnCao1{(_1^Re1]#M)>zP)fr.7rb}-U{q09RI'
 
 GEOLOCATOR = Nominatim(user_agent="NTNU TTK4852 group 1")
 
-with open("cities.txt") as file:
-    cities = file.read().splitlines()
-
 
 def generate_bbox(city: str, d=10 * 10**3) -> str:
     location = GEOLOCATOR.geocode(city)
@@ -43,24 +40,23 @@ def download_image(bbox: str, date: datetime) -> str:
     start_date = datetime.strftime(date, "%Y-%m-%d")
     end_date = datetime.strftime(date + timedelta(days=1), "%Y-%m-%d")
 
-    evalscript = """
-    //VERSION=3
-
-    function setup() {
-    return {
-        input: ["B02", "B03", "B04"],
-        output: { bands: 3 }
-    };
-    }
-
-    function evaluatePixel(sample) {
-    return [2.5 * sample.B04, 2.5 * sample.B03, 2.5 * sample.B02];
-    }
-    """
     bbox = BBox(bbox = eval(bbox), crs=CRS.WGS84)
 
     request = SentinelHubRequest(
-        evalscript=evalscript,
+        evalscript="""
+        //VERSION=3
+
+        function setup() {
+        return {
+            input: ["B02", "B03", "B04"],
+            output: { bands: 3 }
+        };
+        }
+
+        function evaluatePixel(sample) {
+        return [2.5 * sample.B04, 2.5 * sample.B03, 2.5 * sample.B02];
+        }
+        """,
         input_data=[
             SentinelHubRequest.input_data(
                 data_collection=DataCollection.SENTINEL2_L2A,          
@@ -68,7 +64,7 @@ def download_image(bbox: str, date: datetime) -> str:
             ),
         ],
         responses=[
-            SentinelHubRequest.output_response('default', MimeType.JPG),
+            SentinelHubRequest.output_response('default', MimeType.PNG),
         ],
         bbox=bbox,
         #size=[720, 480],
@@ -80,11 +76,15 @@ def download_image(bbox: str, date: datetime) -> str:
     image = true_color_imgs[0]
 
     date = datetime.strftime(date, "%Y_%m_%d_%H_%M_%S")
-    filename = f"tmp/{city}{date}.jpeg"
+    filename = f"tmp/{city}{date}.png"
 
     matplotlib.image.imsave(filename, image)
 
     return filename
+
+
+with open("cities.txt") as file:
+    cities = file.read().splitlines()
 
 pathlib.Path("tmp").mkdir(exist_ok=True)
 pdf = FPDF('L', 'mm', 'A3')
