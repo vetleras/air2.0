@@ -14,6 +14,7 @@ from sentinelhub import (
     DataCollection,
     MimeType,
     SentinelHubRequest,
+    bbox_to_dimensions,
     SHConfig
 )
 
@@ -70,7 +71,8 @@ def download_image(bbox: str, date: datetime) -> str:
             SentinelHubRequest.output_response('default', MimeType.JPG),
         ],
         bbox=bbox,
-        size=[512, 343.697],
+        #size=[720, 480],
+        size=bbox_to_dimensions(bbox, resolution=10),
         config=config
     )
 
@@ -85,7 +87,8 @@ def download_image(bbox: str, date: datetime) -> str:
     return filename
 
 pathlib.Path("tmp").mkdir(exist_ok=True)
-pdf = FPDF()
+pdf = FPDF('L', 'mm', 'A3')
+pdf.set_auto_page_break(False, margin = 0.0)
 pdf.set_font("Courier")
 
 for city in cities:
@@ -94,10 +97,10 @@ for city in cities:
     for index, (measured_at, max, image_taken, time_diff) in df.iterrows():
         pdf.add_page(orientation="L")
         pdf.cell(
-            180,
+            0,
             10,
             f"{city} measured at: {measured_at}, concentration: {max}, image taken: {image_taken}",
-            ln=2,
+            ln=1,
         )
-        pdf.image(download_image(bbox, image_taken))
+        pdf.image(download_image(bbox, image_taken), None, None, 0, 260)
 pdf.output(f"pics.pdf", "F")
