@@ -42,25 +42,27 @@ h1 {
     <div class="row">
 
       <div class="column">
-        <p>date: {{ date_1 }}, concenctration: {{ conc_1 }}</p>
+        <p>date: {{ date_1 }}</p>
+        <p style={% if conc_1 > 50 %} "color:red;" {% else %} "color:green;" {% endif %}> concentration: {{ conc_1 }}</p>
         <img id="img_prev" src={{ img_1 }} style="width:640px;height:640px;"> 
 
         <p style="text-align: left;">{% if prev != 'None' %}<script>
           checkLeft = true;
         </script>{% else %}<script>
           checkLeft = false;
-        </script> 🙁{% endif %}</p>
+        </script>🙁{% endif %}</p>
       </div>
 
       <div class="column">
-        <p>date: {{ date_2 }}, concenctration: {{ conc_2 }}</p>
+        <p>date: {{ date_2 }}</p>
+        <p style={% if conc_2 > 50 %} "color:red;" {% else %} "color:green;" {% endif %}> concentration: {{ conc_2 }}</p>
         <img id="img_next" src={{ img_2 }} style="width:640px;height:640px;"> 
 
         <p style="text-align: right;">{% if next != 'None' %}<script>
         checkRight = true;
         </script>{% else %}<script>
         checkRight = false;
-        </script> 🙁{% endif %}</p>
+        </script>🙁{% endif %}</p>
       </div>
 
     </div> 
