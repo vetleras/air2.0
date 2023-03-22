@@ -18,14 +18,8 @@ from sentinelhub import (
 )
 
 
-config = SHConfig()
-config.sh_client_id = '4dd7b50f-f4a0-452c-bb4b-28825691c7eb'
-config.sh_client_secret = 'dyHmnCao1{(_1^Re1]#M)>zP)fr.7rb}-U{q09RI'
-
-GEOLOCATOR = Nominatim(user_agent="NTNU TTK4852 group 1")
-
-
 def generate_bbox(city: str, d=10 * 10**3) -> str:
+    GEOLOCATOR = Nominatim(user_agent="NTNU TTK4852 group 1")
     location = GEOLOCATOR.geocode(city)
     p = Proj("EPSG:3035", preserve_units=False)
     x, y = p(location.latitude, location.longitude)
@@ -38,16 +32,20 @@ def download_image(city: str, date: str):
     date = datetime.strptime(date, "%Y-%m-%d")
 
     start_date = datetime.strftime(date, "%Y-%m-%d")
-    end_date = datetime.strftime(date + timedelta(days=1), "%Y-%m-%d")
-
     filename = f"tmp/{city}_{start_date}.jpeg"
 
     if (os.path.isfile(filename)):
         print('file exists: ', filename)
         return
     
+    end_date = datetime.strftime(date + timedelta(days=1), "%Y-%m-%d")
+    
     bbox = generate_bbox(city)
     bbox = BBox(bbox = eval(bbox), crs=CRS.WGS84)
+
+    config = SHConfig()
+    config.sh_client_id = '4dd7b50f-f4a0-452c-bb4b-28825691c7eb'
+    config.sh_client_secret = 'dyHmnCao1{(_1^Re1]#M)>zP)fr.7rb}-U{q09RI'
 
     request = SentinelHubRequest(
         evalscript="""
