@@ -5,17 +5,68 @@
 <head>
   <meta charset="utf-8">
   <title>Results</title>
+
+  <style>
+h1 {
+  text-align: left;
+}
+
+.row {
+  display: flex;
+}
+      
+.column {
+  flex: 50%;
+}
+    </style>
+
+<script>
+  document.onkeydown = checkKey;
+  var checkLeft, checkRight = false;
+  function checkKey(e) {
+      e = e || window.event;
+      if (e.keyCode == '37' && checkLeft) {
+        window.open('{{ prev }}', "_top");
+      }
+      if (e.keyCode == '39' && checkRight) {
+        window.open('{{ next }}', "_top");
+      }
+  }
+  </script>
+
 </head>
 
 <body>
-  <h1>{{ test_name }} Results</h1>
+  <h1>City: {{ city }}</h1>
   <ul>
-  {% for student in students %}
-    <li>
-        {% if student.score > 80 %}🙂{% else %}🙁{% endif %}
-      <em>{{ student.name }}:</em> {{ student.score }}/{{ max_score }}
-    </li>
-  {% endfor %}
+    <div class="row">
+
+      <div class="column">
+        <p>date: {{ date_1 }}, concenctration: {{ conc_1 }}</p>
+        <img id="img_prev" src={{ img_1 }} style="width:640px;height:640px;"> 
+
+        <p style="text-align: left;">{% if prev != 'None' %}<script>
+          checkLeft = true;
+        </script>{% else %}<script>
+          checkLeft = false;
+        </script> 🙁{% endif %}</p>
+      </div>
+
+      <div class="column">
+        <p>date: {{ date_2 }}, concenctration: {{ conc_2 }}</p>
+        <img id="img_next" src={{ img_2 }} style="width:640px;height:640px;"> 
+
+        <p style="text-align: right;">{% if next != 'None' %}<script>
+        checkRight = true;
+        </script>{% else %}<script>
+        checkRight = false;
+        </script> 🙁{% endif %}</p>
+      </div>
+
+    </div> 
   </ul>
 </body>
+
+
+
 </html>
