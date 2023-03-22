@@ -34,7 +34,7 @@ def generate_bbox(city: str, d=10 * 10**3) -> str:
     return f"{tl_lon},{tl_lat},{br_lon},{br_lat}"
 
 
-def download_image(city: str, date: datetime):
+def download_image(city: str, date: str):
     date = datetime.strptime(date, "%Y-%m-%d")
 
     start_date = datetime.strftime(date, "%Y-%m-%d")
@@ -84,7 +84,7 @@ def download_image(city: str, date: datetime):
     matplotlib.image.imsave(filename, image)
 
 
-def main(city: str, date: datetime):
+def main(city: str, date: str):
     download_image(city, date)
 
 if __name__ == "__main__":
