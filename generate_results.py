@@ -78,7 +78,7 @@ class Image:
         self, city: City, datetime: datetime, measurement: Measurement
     ) -> None:
         self.filename = f"{city.country_code}-{normalize(city.name)}-{datetime}.jpg"
-        download_image(*city.location, datetime, "static/" + self.filename)
+        download_image(*city.location, datetime, "results/" + self.filename)
         self.datetime = datetime
         self.measurement = measurement
 
@@ -94,7 +94,7 @@ def generate_result(
     with open("template.html", "r") as file:
         template: Template = Template(file.read())
 
-    with open("static/" + filename, mode="w") as file:
+    with open("results/" + filename, mode="w") as file:
         file.write(
             template.render(
                 city=city,
@@ -117,7 +117,7 @@ if __name__ == "__main__":
         key=lambda c: c[1].value,
         reverse=True,
     )[:25]
-    pathlib.Path.mkdir("static", exist_ok=True)
+    pathlib.Path.mkdir("results", exist_ok=True)
 
     for i, (city, bad_measurement, bad_capture_datetime) in enumerate(
         tqdm(bad_aggregates)
@@ -137,4 +137,4 @@ if __name__ == "__main__":
             previous_result=f"{i-1}.html" if i > 0 else None,
             next_result=f"{i+1}.html" if i < len(bad_aggregates) - 1 else None,
         )
-    print(f"file://{os.getcwd()}/static/0.html")
+    print(f"file://{os.getcwd()}/results/0.html")
