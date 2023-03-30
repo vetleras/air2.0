@@ -21,6 +21,7 @@ import pathlib
 def generate_bbox(lat: float, lon: float, d=9 * 10**3) -> str:
     p = Proj("EPSG:3035", preserve_units=False)
     x, y = p(lat, lon)
+    # tl top left, br bottom right
     tl_lat, tl_lon = p(x - d, y + d, inverse=True)
     br_lat, br_lon = p(x + d, y - d, inverse=True)
     return BBox((tl_lon, tl_lat, br_lon, br_lat), crs=CRS.WGS84)
