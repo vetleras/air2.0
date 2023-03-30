@@ -1,4 +1,5 @@
-air_quality_data/
-.DS_Store
+.venv/
 __pycache__/
-sentinel_product_data/
+.DS_Store
+static/
+cities.pkl-hex

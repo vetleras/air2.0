@@ -1,0 +1,43 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    {%- if previous_result is not none %}
+    <script>
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "ArrowLeft") {
+                window.location.href = "{{ previous_result }}";
+            }
+        });
+    </script>
+    {%- endif %}
+    {%- if next_result is not none %}
+    <script>
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "ArrowRight") {
+                window.location.href = "{{ next_result }}";
+            }
+        });
+    </script>
+    {%- endif %}
+</head>
+
+<body>
+    <h1>{{ city.country_code }} {{ city.name }}</h1>
+    <div style="display: flex;">
+        <div style="padding-right: 4px;">
+            Concentration: {{ bad_image.measurement.value }}<br>
+            Measured at {{ bad_image.measurement.datetime }}<br>
+            Captured at {{ bad_image.datetime}}<br>
+            <img src="{{ bad_image.filename }}" style="width: 100%" />
+        </div>
+        <div style="padding-left: 4px;">
+            Concentration: {{ good_image.measurement.value }}<br>
+            Measured at {{ good_image.measurement.datetime }}<br>
+            Captured at {{ good_image.datetime}}<br>
+            <img src="{{ good_image.filename }}" style="width: 100%" />
+        </div>
+    </div>
+</body>
+
+</html>
