@@ -32,8 +32,8 @@ def download_image(lat: float, lon: float, datetime: datetime, filename: str):
         return
 
     config = SHConfig()
-    config.sh_client_id = "4dd7b50f-f4a0-452c-bb4b-28825691c7eb"
-    config.sh_client_secret = "dyHmnCao1{(_1^Re1]#M)>zP)fr.7rb}-U{q09RI"
+    config.sh_client_id = "10fb2d07-2ff0-48ae-800d-eb6107af60dd"
+    config.sh_client_secret = "y7ttT}>UiXeOcoP5j&0y[C@>j+^ta6]Jn+i24iU."
 
     bbox = generate_bbox(lat, lon)
     request = SentinelHubRequest(
@@ -78,7 +78,9 @@ class Image:
     def __init__(
         self, city: City, datetime: datetime, measurement: Measurement
     ) -> None:
-        self.filename = f"{city.country_code}-{normalize(city.name)}-{datetime}.jpg"
+        self.filename = (
+            f"{city.country_code}-{normalize(city.name)}-{datetime.date()}.jpg"
+        )
         download_image(*city.location, datetime, "results/" + self.filename)
         self.datetime = datetime
         self.measurement = measurement
@@ -117,8 +119,8 @@ if __name__ == "__main__":
         ),
         key=lambda c: c[1].value,
         reverse=True,
-    )[:25]
-    pathlib.Path.mkdir("results", exist_ok=True)
+    )[:100]
+    pathlib.Path.mkdir(pathlib.Path("results"), exist_ok=True)
 
     for i, (city, bad_measurement, bad_capture_datetime) in enumerate(
         tqdm(bad_aggregates)
