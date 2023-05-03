@@ -32,8 +32,8 @@ def download_image(lat: float, lon: float, datetime: datetime, filename: str):
         return
 
     config = SHConfig()
-    config.sh_client_id = "10fb2d07-2ff0-48ae-800d-eb6107af60dd"
-    config.sh_client_secret = "y7ttT}>UiXeOcoP5j&0y[C@>j+^ta6]Jn+i24iU."
+    config.sh_client_id = "client_id"
+    config.sh_client_secret = "client_secret"
 
     bbox = generate_bbox(lat, lon)
     request = SentinelHubRequest(

@@ -56,7 +56,7 @@ def get_measurement_urls(city: str, country_code: str) -> list[str]:
         },
     )
     response.raise_for_status()
-    response.encoding = "utf-8-sig"  # to remove BOM at beginning of file
+    response.encoding = "utf-8-sig"
     return response.text.split()
 
 
@@ -82,8 +82,8 @@ def get_measurements(city: str, country_code: str) -> list[Measurement]:
 
 def get_capture_dates(lat: float, lon: float) -> list[datetime]:
     products = SentinelAPI(
-        "vetlerastirsed-javru6-nixdAk",
-        "tirsed-javru6-nixdAk",
+        "username",
+        "password",
         show_progressbars=False,
     ).query(
         area=f"{lat}, {lon}",
